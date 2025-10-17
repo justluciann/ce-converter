@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CR ↔ CE Converter</title>
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: #f5f7fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .converter {
+      background: white;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      width: 360px;
+    }
+    h2 {
+      margin-bottom: 1rem;
+      color: #333;
+    }
+    label {
+      display: block;
+      font-weight: 500;
+      margin-top: 0.75rem;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 0.6rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      margin-top: 0.25rem;
+      text-align: center;
+    }
+    button {
+      background: #4b8efc;
+      color: white;
+      font-weight: 600;
+      border: none;
+      margin-top: 1.2rem;
+      cursor: pointer;
+    }
+    .result {
+      margin-top: 1rem;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #222;
+    }
+  </style>
+</head>
+<body>
+  <div class="converter">
+    <h2>⚡ CR ↔ CE Converter</h2>
+
+    <label for="sellPrice">Sell Price (for 100 CE):</label>
+    <input type="number" id="sellPrice" placeholder="" step="0.01">
+
+    <label for="buyPrice">Buy Price (for 100 CE):</label>
+    <input type="number" id="buyPrice" placeholder="" step="0.01">
+
+    <label for="action">Action:</label>
+    <select id="action">
+      <option value="buy">Buy CE</option>
+      <option value="sell">Sell CE</option>
+    </select>
+
+    <label for="amount">Amount of CE:</label>
+    <input type="number" id="amount" placeholder="e.g. 250" step="0.01">
+
+    <button onclick="convert()">Convert</button>
+
+    <div class="result" id="result">Result: –</div>
+  </div>
+
+  <script>
+    // Format numbers into K and M
+    function formatNumber(num) {
+      if (num >= 1_000_000) return (num / 1_000_000).toFixed(2).replace(/\.00$/, '') + 'M';
+      if (num >= 1_000) return (num / 1_000).toFixed(2).replace(/\.00$/, '') + 'K';
+      return num.toFixed(2).replace(/\.00$/, '');
+    }
+
+    function convert() {
+      const sellPrice = parseFloat(document.getElementById('sellPrice').value);
+      const buyPrice = parseFloat(document.getElementById('buyPrice').value);
+      const action = document.getElementById('action').value;
+      const amount = parseFloat(document.getElementById('amount').value);
+      const resultDiv = document.getElementById('result');
+
+      if (isNaN(sellPrice) || isNaN(buyPrice) || isNaN(amount) || sellPrice <= 0 || buyPrice <= 0 || amount <= 0) {
+        resultDiv.textContent = "⚠️ Please fill in all fields with valid numbers.";
+        return;
+      }
+
+      let crowns;
+      if (action === "buy") {
+        crowns = (amount / 100) * buyPrice;
+        resultDiv.textContent = `You need ${formatNumber(crowns)} CR 👑 to buy ${formatNumber(amount)} CE ⚡`;
+      } else {
+        crowns = (amount / 100) * sellPrice;
+        resultDiv.textContent = `You will get ${formatNumber(crowns)} CR 👑 for selling ${formatNumber(amount)} CE ⚡`;
+      }
+    }
+  </script>
+</body>
+</html>
