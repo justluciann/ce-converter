@@ -16,19 +16,20 @@
 
     /* Background Image */
     body {
-      background: url('https://steamcdn-a.akamaihd.net/steamcommunity/public/images/items/99900/1abad591feaec1da53867282abbd41bdda64f338.jpg') no-repeat center center fixed;
+      background: url('https://images.launchbox-app.com/8489f867-85d0-43ad-b898-1430544d3dbd.jpg') no-repeat center center fixed;
       background-size: cover;
       display: flex;
       justify-content: center;
       align-items: center;
+      flex-direction: column;
     }
 
     /* Overlay for readability */
     .overlay {
-      position: absolute;
+      position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      background-color: rgba(10, 15, 25, 0.7);
+      background-color: rgba(10, 15, 25, 0.3);
       z-index: 0;
     }
 
@@ -103,6 +104,33 @@
       color: #6b7b8a;
       text-align: center;
     }
+
+    /* Marquee */
+    .marquee-container {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background: rgba(25, 35, 55, 0.85);
+      color: #ffd966;
+      font-weight: 600;
+      padding: 8px 0;
+      overflow: hidden;
+      white-space: nowrap;
+      z-index: 2;
+      border-top: 1px solid #4b6279;
+    }
+
+    .marquee-text {
+      display: inline-block;
+      padding-left: 100%;
+      animation: marquee 15s linear infinite;
+    }
+
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
+
   </style>
 </head>
 <body>
@@ -130,6 +158,10 @@
 
     <div class="result" id="result">Result: –</div>
     <div class="footer">Crowns = CR • Energy = CE</div>
+  </div>
+
+  <div class="marquee-container">
+    <div class="marquee-text">If you liked it, buy me a coffee in-game, Mail Delivery "Penopt"</div>
   </div>
 
   <script>
