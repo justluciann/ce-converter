@@ -1,158 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Spiral Knights – CR ↔ CE Converter</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spiral Knights Currency Converter</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap');
-
     body {
-      font-family: "Orbitron", sans-serif;
-      background: radial-gradient(circle at center, #0b1b2a 0%, #060d14 100%);
-      color: #f5f5f5;
+      font-family: "Trebuchet MS", sans-serif;
+      background: radial-gradient(circle at center, #101820, #070c12);
+      color: #d0d8e0;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
       margin: 0;
-      overflow: hidden;
     }
 
-    /* Subtle animated glow background */
-    body::before {
-      content: "";
-      position: absolute;
-      width: 200%;
-      height: 200%;
-      background: radial-gradient(circle at center, rgba(0, 195, 255, 0.15), transparent 70%),
-                  radial-gradient(circle at 70% 30%, rgba(255, 215, 0, 0.15), transparent 60%);
-      animation: rotate 40s linear infinite;
-      z-index: 0;
-    }
-
-    @keyframes rotate {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-
-    .converter {
-      position: relative;
-      z-index: 2;
-      background: rgba(20, 35, 55, 0.9);
-      padding: 2rem;
-      border-radius: 16px;
-      box-shadow: 0 0 20px rgba(0, 195, 255, 0.3);
+    .container {
+      background: rgba(25, 35, 45, 0.95);
+      border: 1px solid #3e546a;
+      border-radius: 14px;
+      padding: 28px 36px;
+      width: 340px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
       text-align: center;
-      width: 360px;
-      border: 1px solid rgba(0, 195, 255, 0.3);
     }
 
-    h2 {
-      margin-bottom: 1rem;
-      color: #00baff;
-      text-shadow: 0 0 8px #00baff;
+    h1 {
+      color: #b0c4de;
+      margin-bottom: 20px;
+      font-size: 1.5rem;
+      letter-spacing: 1px;
     }
 
     label {
       display: block;
-      font-weight: 500;
-      margin-top: 0.75rem;
-      color: #f2f2f2;
+      margin: 10px 0 6px;
+      color: #aab9c8;
+      font-size: 0.9rem;
+      text-align: left;
     }
 
     input, select, button {
       width: 100%;
-      padding: 0.6rem;
-      border-radius: 8px;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      margin-top: 0.25rem;
-      text-align: center;
-      background: rgba(255, 255, 255, 0.08);
-      color: #f5f5f5;
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: 1px solid #4b6279;
+      background-color: #18222c;
+      color: #e0e6ec;
       font-size: 1rem;
+      outline: none;
+      transition: 0.2s ease;
     }
 
-    input::placeholder {
-      color: #aaa;
+    input:focus, select:focus {
+      border-color: #6ea0c6;
+      background-color: #1c2a36;
     }
 
     button {
-      background: linear-gradient(135deg, #00baff, #0070f3);
-      color: white;
-      font-weight: 700;
+      background: linear-gradient(180deg, #3d7ca8, #2a536e);
       border: none;
-      margin-top: 1.2rem;
+      margin-top: 16px;
       cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 0 12px rgba(0, 186, 255, 0.5);
+      font-weight: bold;
+      transition: background 0.2s;
     }
 
     button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
-      background: linear-gradient(135deg, #ffce00, #ff8800);
+      background: linear-gradient(180deg, #4f8db9, #2e5f7e);
     }
 
     .result {
-      margin-top: 1rem;
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: #ffe066;
-      text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+      margin-top: 18px;
+      font-size: 1.1rem;
+      color: #b8c9d8;
+    }
+
+    .footer {
+      font-size: 0.75rem;
+      margin-top: 18px;
+      color: #6b7b8a;
     }
   </style>
 </head>
 <body>
-  <div class="converter">
-    <h2>⚙️ Spiral Knights Converter</h2>
+  <div class="container">
+    <h1>Spiral Knights Exchange</h1>
 
-    <label for="sellPrice">Sell Price (per 100 CE):</label>
-    <input type="number" id="sellPrice" placeholder="CR you receive" step="0.01">
+    <label>Buy Price (CR per 100 CE)</label>
+    <input type="number" id="buy" placeholder="e.g. 25000" />
 
-    <label for="buyPrice">Buy Price (per 100 CE):</label>
-    <input type="number" id="buyPrice" placeholder="CR you pay" step="0.01">
+    <label>Sell Price (CR per 100 CE)</label>
+    <input type="number" id="sell" placeholder="e.g. 23000" />
 
-    <label for="action">Action:</label>
+    <label>Action</label>
     <select id="action">
-      <option value="buy">Buy CE</option>
-      <option value="sell">Sell CE</option>
+      <option value="buy">Buy Energy (CE)</option>
+      <option value="sell">Sell Energy (CE)</option>
     </select>
 
-    <label for="amount">Amount of CE:</label>
-    <input type="number" id="amount" placeholder="e.g. 250" step="0.01">
+    <label>Amount (CE)</label>
+    <input type="number" id="amount" placeholder="e.g. 500" />
 
     <button onclick="convert()">Convert</button>
 
-    <div class="result" id="result">Result: –</div>
+    <div class="result" id="result"></div>
+
+    <div class="footer">Crowns = CR • Energy = CE</div>
   </div>
 
   <script>
-    function formatNumber(num) {
-      if (num >= 1_000_000) return (num / 1_000_000).toFixed(2).replace(/\.00$/, '') + 'M';
-      if (num >= 1_000) return (num / 1_000).toFixed(2).replace(/\.00$/, '') + 'K';
-      return num.toFixed(2).replace(/\.00$/, '');
+    function formatNum(n) {
+      if (n >= 1e6) return (n / 1e6).toFixed(2) + "M";
+      if (n >= 1e3) return (n / 1e3).toFixed(1) + "K";
+      return n.toString();
     }
 
     function convert() {
-      const sellPrice = parseFloat(document.getElementById('sellPrice').value);
-      const buyPrice = parseFloat(document.getElementById('buyPrice').value);
-      const action = document.getElementById('action').value;
-      const amount = parseFloat(document.getElementById('amount').value);
-      const resultDiv = document.getElementById('result');
+      const buy = parseFloat(document.getElementById("buy").value);
+      const sell = parseFloat(document.getElementById("sell").value);
+      const action = document.getElementById("action").value;
+      const amount = parseFloat(document.getElementById("amount").value);
+      const resultEl = document.getElementById("result");
 
-      if (isNaN(sellPrice) || isNaN(buyPrice) || isNaN(amount) || sellPrice <= 0 || buyPrice <= 0 || amount <= 0) {
-        resultDiv.textContent = "⚠️ Enter valid values first!";
+      if (!buy || !sell || !amount) {
+        resultEl.textContent = "Please fill in all fields.";
         return;
       }
 
-      let crowns;
+      let result;
       if (action === "buy") {
-        crowns = (amount / 100) * buyPrice;
-        resultDiv.textContent = `You need ${formatNumber(crowns)} CR 👑 to buy ${formatNumber(amount)} CE 💎`;
+        result = (amount / 100) * buy;
+        resultEl.textContent = `Buying ${amount} CE costs ≈ ${formatNum(result)} CR`;
       } else {
-        crowns = (amount / 100) * sellPrice;
-        resultDiv.textContent = `You will get ${formatNumber(crowns)} CR 👑 for selling ${formatNumber(amount)} CE 💎`;
+        result = (amount / 100) * sell;
+        resultEl.textContent = `Selling ${amount} CE gives ≈ ${formatNum(result)} CR`;
       }
     }
   </script>
