@@ -3,117 +3,136 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Spiral Knights Currency Converter</title>
+  <title>Spiral Knights Converter</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: "Trebuchet MS", sans-serif;
-      background: radial-gradient(circle at center, #101820, #070c12);
-      color: #d0d8e0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
+    /* Reset */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body, html {
+      height: 100%;
+      font-family: 'Orbitron', sans-serif;
+      color: #f5f5f5;
     }
 
+    /* Video background */
+    .bg-video {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      z-index: -1;
+      opacity: 0.35; /* subtle, not overpowering */
+    }
+
+    /* Container */
     .container {
-      background: rgba(25, 35, 45, 0.95);
-      border: 1px solid #3e546a;
-      border-radius: 14px;
-      padding: 28px 36px;
-      width: 340px;
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
-      text-align: center;
+      position: relative;
+      z-index: 1;
+      max-width: 380px;
+      margin: 2rem auto;
+      background: rgba(25, 35, 55, 0.85);
+      border-radius: 16px;
+      padding: 2rem 2.5rem;
+      box-shadow: 0 0 20px rgba(0, 186, 255, 0.3);
     }
 
     h1 {
-      color: #b0c4de;
+      text-align: center;
+      color: #00baff;
+      font-weight: 700;
       margin-bottom: 20px;
-      font-size: 1.5rem;
-      letter-spacing: 1px;
     }
 
     label {
       display: block;
-      margin: 10px 0 6px;
-      color: #aab9c8;
+      margin-top: 12px;
+      margin-bottom: 4px;
       font-size: 0.9rem;
-      text-align: left;
+      color: #d0e0f0;
     }
 
     input, select, button {
       width: 100%;
-      padding: 8px 10px;
-      border-radius: 6px;
+      padding: 10px;
+      border-radius: 8px;
       border: 1px solid #4b6279;
       background-color: #18222c;
       color: #e0e6ec;
       font-size: 1rem;
       outline: none;
-      transition: 0.2s ease;
+      transition: all 0.2s ease;
     }
 
     input:focus, select:focus {
-      border-color: #6ea0c6;
+      border-color: #00baff;
       background-color: #1c2a36;
     }
 
     button {
-      background: linear-gradient(180deg, #3d7ca8, #2a536e);
-      border: none;
       margin-top: 16px;
+      font-weight: 700;
       cursor: pointer;
-      font-weight: bold;
-      transition: background 0.2s;
+      background: linear-gradient(180deg, #00baff, #0070f3);
+      border: none;
+      transition: background 0.3s;
     }
 
     button:hover {
-      background: linear-gradient(180deg, #4f8db9, #2e5f7e);
+      background: linear-gradient(180deg, #ffce00, #ff8800);
     }
 
     .result {
       margin-top: 18px;
       font-size: 1.1rem;
-      color: #b8c9d8;
+      font-weight: 600;
+      color: #ffe066;
     }
 
     .footer {
+      margin-top: 16px;
       font-size: 0.75rem;
-      margin-top: 18px;
       color: #6b7b8a;
+      text-align: center;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Spiral Knights Exchange</h1>
 
-    <label>Buy Price (CR per 100 CE)</label>
+  <!-- Video Background -->
+  <video autoplay muted loop class="bg-video">
+    <source src="https://www.videvo.net/videvo_files/converted/2016_07/preview/160629_B_003_SciFi_energy_loop.mp414046.webm" type="video/webm">
+    <!-- fallback for unsupported browsers -->
+  </video>
+
+  <div class="container">
+    <h1>⚡ Spiral Knights Converter</h1>
+
+    <label for="buy">Buy Price (CR per 100 CE)</label>
     <input type="number" id="buy" placeholder="e.g. 25000" />
 
-    <label>Sell Price (CR per 100 CE)</label>
+    <label for="sell">Sell Price (CR per 100 CE)</label>
     <input type="number" id="sell" placeholder="e.g. 23000" />
 
-    <label>Action</label>
+    <label for="action">Action</label>
     <select id="action">
-      <option value="buy">Buy Energy (CE)</option>
-      <option value="sell">Sell Energy (CE)</option>
+      <option value="buy">Buy CE</option>
+      <option value="sell">Sell CE</option>
     </select>
 
-    <label>Amount (CE)</label>
+    <label for="amount">Amount of CE</label>
     <input type="number" id="amount" placeholder="e.g. 500" />
 
     <button onclick="convert()">Convert</button>
 
-    <div class="result" id="result"></div>
-
+    <div class="result" id="result">Result: –</div>
     <div class="footer">Crowns = CR • Energy = CE</div>
   </div>
 
   <script>
     function formatNum(n) {
-      if (n >= 1e6) return (n / 1e6).toFixed(2) + "M";
-      if (n >= 1e3) return (n / 1e3).toFixed(1) + "K";
+      if (n >= 1_000_000) return (n / 1_000_000).toFixed(2).replace(/\.00$/, '') + "M";
+      if (n >= 1_000) return (n / 1_000).toFixed(1).replace(/\.0$/, '') + "K";
       return n.toString();
     }
 
@@ -125,17 +144,17 @@
       const resultEl = document.getElementById("result");
 
       if (!buy || !sell || !amount) {
-        resultEl.textContent = "Please fill in all fields.";
+        resultEl.textContent = "⚠️ Please fill all fields.";
         return;
       }
 
       let result;
       if (action === "buy") {
         result = (amount / 100) * buy;
-        resultEl.textContent = `Buying ${amount} CE costs ≈ ${formatNum(result)} CR`;
+        resultEl.textContent = `Buying ${formatNum(amount)} CE costs ≈ ${formatNum(result)} CR`;
       } else {
         result = (amount / 100) * sell;
-        resultEl.textContent = `Selling ${amount} CE gives ≈ ${formatNum(result)} CR`;
+        resultEl.textContent = `Selling ${formatNum(amount)} CE gives ≈ ${formatNum(result)} CR`;
       }
     }
   </script>
